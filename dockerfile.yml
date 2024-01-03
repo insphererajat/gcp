@@ -1,5 +1,5 @@
 # create new
-FROM centos:8
+FROM centos
 MAINTAINER ServerWorld <admin@srv.world>
 
 RUN dnf -y install httpd
