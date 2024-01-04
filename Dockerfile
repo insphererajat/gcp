@@ -9,7 +9,7 @@ RUN yum install -y httpd && \
 #COPY httpd.conf /etc/httpd/conf/httpd.conf
 
 # Expose port 80 for the web server
-EXPOSE 80
+EXPOSE 80 8080
 
 # Start the httpd service when the container starts
 CMD ["httpd", "-D", "FOREGROUND"]
