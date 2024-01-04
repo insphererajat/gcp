@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/ppel-co-in/your-image-name:latest', '.']
+    args: ['build', '-t', 'gcr.io/ppel-co-in/Dockerfile:latest', '.']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/ppel-co-in/your-image-name:latest']
+    args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
