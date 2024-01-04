@@ -1,4 +1,6 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/ppel-co-in/build', '-f', '/workspace/docker/dockerfile.yml', '.']
-  
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/ppel-co-in/your-image-name:latest', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/ppel-co-in/your-image-name:latest']
