@@ -6,7 +6,7 @@ RUN yum install -y httpd && \
     yum clean all
 
 # Copy the local configuration file to the container
-COPY httpd.conf /etc/httpd/conf/httpd.conf
+#COPY httpd.conf /etc/httpd/conf/httpd.conf
 
 # Expose port 80 for the web server
 EXPOSE 80
