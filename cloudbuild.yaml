@@ -4,3 +4,13 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'pipeline'
+      - '--image=gcr.io/ppel-co-in/Dockerfile:latest'
+      - '--platform=managed'
+      - '--region=asia-south1'
+      - '--allow-unauthenticated'
