@@ -1,5 +1,5 @@
-# Use the official PHP 8.0 image with Apache as the base image
-FROM php:8.0-apache
+# Use the official Red Hat Universal Base Image (UBI) as the base image
+FROM registry.access.redhat.com/ubi8/ubi
 
 # Define an argument for the port with a default value of 8080
 ARG PORT=8080
