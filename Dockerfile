@@ -16,6 +16,9 @@ WORKDIR /var/www/html
 # Create a simple PHP file for testing
 RUN echo "<?php phpinfo(); ?>" > index.php
 
+# Copy your index.html file into the Apache document root
+COPY ./www.conf /etc/php-fpm.d/www.conf
+
 # Expose port 80
 EXPOSE 80
 
