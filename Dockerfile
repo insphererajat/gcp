@@ -36,7 +36,7 @@ RUN yum -y install httpd php php-cli php-json
 RUN sed -i "s/Listen 80/Listen $PORT/" /etc/httpd/conf/httpd.conf
 
 # Optionally, copy your custom configuration files or website content
-COPY ./vhost.conf /etc/httpd/conf.d/vhosts.conf
+COPY ./vhosts.conf /etc/httpd/conf.d/vhosts.conf
 
 # Create a directory for your PHP project
 RUN mkdir -p /var/www/text
