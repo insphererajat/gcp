@@ -44,6 +44,9 @@ RUN mkdir -p /var/www/text
 # Copy your index.php file into the project directory
 COPY ./text/index.php /var/www/text/index.php
 
+# Set index.php as the default document
+RUN echo "DirectoryIndex index.php" >> /etc/httpd/conf/httpd.conf
+
 # Expose the port defined during build time
 EXPOSE $PORT
 
