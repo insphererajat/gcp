@@ -43,6 +43,7 @@ RUN sed -i "s/Listen 80/Listen $PORT/" /etc/httpd/conf/httpd.conf
 
 # Copy your index.php file into the project directory
 COPY ./index.php /var/www/html/index.php
+COPY ./httpd.conf /etc/httpd/conf/httpd.conf
 
 # Set index.php as the default document
 #RUN echo "DirectoryIndex index.php" >> /etc/httpd/conf/httpd.conf
