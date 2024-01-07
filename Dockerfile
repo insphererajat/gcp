@@ -36,16 +36,16 @@ RUN yum -y install httpd php php-cli php-json
 RUN sed -i "s/Listen 80/Listen $PORT/" /etc/httpd/conf/httpd.conf
 
 # Optionally, copy your custom configuration files or website content
-COPY ./vhosts.conf /etc/httpd/conf.d/vhosts.conf
+#COPY ./vhosts.conf /etc/httpd/conf.d/vhosts.conf
 
 # Create a directory for your PHP project
-RUN mkdir -p /var/www/text
+#RUN mkdir -p /var/www/text
 
 # Copy your index.php file into the project directory
-COPY ./text/index.php /var/www/text/index.php
+COPY ./test/index.php /var/www/html/index.php
 
 # Set index.php as the default document
-RUN echo "DirectoryIndex index.php" >> /etc/httpd/conf/httpd.conf
+#RUN echo "DirectoryIndex index.php" >> /etc/httpd/conf/httpd.conf
 
 # Expose the port defined during build time
 EXPOSE $PORT
