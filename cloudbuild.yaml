@@ -10,10 +10,10 @@ steps:
       - 'compute'
       - 'instances'
       - 'create-with-container'
-      - 'your-instance'
+      - 'instance-2'
       - '--container-image=gcr.io/ppel-co-in/Dockerfile:latest'
       - '--machine-type=n1-standard-1'
-      - '--zone=us-central1'
+      - '--zone=us-central1-a'
 
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    args:
