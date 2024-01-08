@@ -18,7 +18,7 @@ steps:
       - '--boot-disk-size=50GB'
       - '--boot-disk-type=pd-ssd'
       - '--boot-disk-device-name=$(_CLOUD_INSTANCE_TEMPLATE)'
-      - '--create-disk=mode=rw,boot=no,auto-delete=yes,image=gcr.io/ppel-co-in/Dockerfile:latest'
+      - '--create-disk=mode=rw,boot=yes,auto-delete=yes,image=gcr.io/ppel-co-in/Dockerfile:latest'
       - '--substitutions=_CLOUD_INSTANCE_TEMPLATE=${_CLOUD_INSTANCE_TEMPLATE},_CLOUD_PROJECT_ID=${_CLOUD_PROJECT_ID}'
 
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -37,7 +37,7 @@ steps:
 
 substitutions:
   _CLOUD_PROJECT_ID: 'ppel-co-in'
-  _CLOUD_INSTANCE_ZONE: 'us-central1'
+  _CLOUD_INSTANCE_ZONE: 'us-central1-a'
   _CLOUD_INSTANCE_NAME: 'gcp'
   _CLOUD_INSTANCE_TEMPLATE: 'gcp-template'
   _CLOUD_INSTANCE_GROUP_NAME: 'gcp-group'
