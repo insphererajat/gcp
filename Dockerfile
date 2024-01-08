@@ -24,7 +24,6 @@ EXPOSE $PORT
 CMD ["httpd", "-D", "FOREGROUND"]
 
 
-
 # Use the official Red Hat Universal Base Image (UBI) as the base image
 # FROM registry.access.redhat.com/ubi8/ubi
 
