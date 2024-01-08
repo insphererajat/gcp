@@ -11,8 +11,8 @@ steps:
       - 'compute'
       - 'instance-templates'
       - 'create-with-container'
-      - 'your-instance-template'
-      - '--container-image=gcr.io/$PROJECT_ID/your-app:latest'
+      - 'instance-template-gcpp'
+      - '--container-image=gcr.io/Dockerfile:latest'
       - '--machine-type=n1-standard-1'  # Adjust the machine type as needed
       - '--tags=http-server,https-server'
 
@@ -21,9 +21,9 @@ steps:
       - 'compute'
       - 'target-pools'
       - 'create'
-      - 'your-target-pool'
-      - '--region=your-region'  # Replace with your preferred region
-      - '--http-health-check=your-http-health-check'  # Replace with your HTTP health check
+      - 'my-target-pool'
+      - '--region=us-central1'
+      #- '--http-health-check=your-http-health-check'  # Replace with your HTTP health check
 
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -31,12 +31,12 @@ steps:
       - 'instance-groups'
       - 'managed'
       - 'create'
-      - 'your-instance-group'
-      - '--base-instance-name=your-instance-group'
+      - 'instance-group-gcpp'
+      - '--base-instance-name=instance-group-gcpp'
       - '--size=1'
-      - '--template=your-instance-template'
-      - '--target-pool=your-target-pool'
-      - '--region=your-region'  # Replace with your preferred region
+      - '--template=instance-template-gcpp'
+      - '--target-pool=my-target-pool'
+      - '--region=us-central1'  # Replace with your preferred region
 
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    args:
