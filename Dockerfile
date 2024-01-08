@@ -27,7 +27,16 @@
 FROM registry.access.redhat.com/ubi8/ubi
 
 # Install necessary packages (replace with your specific requirements)
-RUN yum -y install java-11-openjdk-devel tomcat mariadb-server
+RUN yum -y install java-11-openjdk-devel
+
+# Install Tomcat
+RUN curl -O https://downloads.apache.org/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50.tar.gz && \
+    tar -xzvf apache-tomcat-9.0.50.tar.gz -C /opt && \
+    rm apache-tomcat-9.0.50.tar.gz && \
+    ln -s /opt/apache-tomcat-9.0.50 /opt/tomcat
+
+# Install MariaDB
+RUN yum -y install mariadb-server
 
 # Define an argument for the port with a default value of 8080
 ARG TOMCAT_PORT=8080
@@ -51,4 +60,4 @@ COPY ./mariadb_conf/my.cnf /etc/my.cnf.d/my.cnf
 EXPOSE $TOMCAT_PORT $MARIADB_PORT
 
 # The main command to start services when the container starts
-CMD ["sh", "-c", "systemctl start mariadb && catalina.sh run"]
+CMD ["sh", "-c", "/opt/tomcat/bin/catalina.sh run"]
