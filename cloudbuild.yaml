@@ -24,16 +24,36 @@ steps:
 
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
-      - 'run'
-      - 'deploy'
-      - 'pipeline'
-      - '--image=gcr.io/ppel-co-in/Dockerfile:latest'
-      - '--platform=managed'
-      - '--region=asia-south1'
-      - '--allow-unauthenticated'
-
-images:
-  - 'gcr.io/ppel-co-in/Dockerfile:latest'
+      - 'compute'
+      - 'instances'
+      - 'create'
+      - 'gcp'
+      - '--image-family=rhel-8'
+      - '--image-project=rhel-cloud'
+      - '--tags=http-server,https-server'
+      - '--project=ppel-co-in'
+      - '--zone=us-central1'
+      - '--boot-disk-size=50GB'
+      - '--boot-disk-type=pd-ssd'
+      - '--boot-disk-device-name=gcp'
+      - '--create-disk=mode=rw,boot=no,auto-delete=yes,image=gcr.io/ppel-co-in/Dockerfile:latest'
 
 substitutions:
-  _CLOUD_RUN_SERVICE: 'pipeline'
+  _CLOUD_RUN_SERVICE: 'gcp'
+
+
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    args:
+#      - 'run'
+#      - 'deploy'
+#      - 'pipeline'
+#      - '--image=gcr.io/ppel-co-in/Dockerfile:latest'
+#      - '--platform=managed'
+#      - '--region=asia-south1'
+#      - '--allow-unauthenticated'
+
+#images:
+#  - 'gcr.io/ppel-co-in/Dockerfile:latest'
+
+#substitutions:
+#  _CLOUD_RUN_SERVICE: 'pipeline'
