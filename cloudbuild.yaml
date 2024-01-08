@@ -6,39 +6,33 @@ steps:
     args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        gcloud compute instance-templates create $INSTANCE_TEMPLATE \
-          --image-family=rhel-8 \
-          --image-project=rhel-cloud \
-          --tags=http-server,https-server \
-          --project=$PROJECT_ID \
-          --boot-disk-size=50GB \
-          --boot-disk-type=pd-ssd \
-          --boot-disk-device-name=$INSTANCE_TEMPLATE \
-          --create-disk=mode=rw,boot=no,auto-delete=yes,image=gcr.io/ppel-co-in/your-image-name:latest
+      - 'compute'
+      - 'instance-templates'
+      - 'create'
+      - 'gcpp-template'
+      - '--image-family=rhel-8'
+      - '--image-project=rhel-cloud'
+      - '--tags=http-server,https-server'
+      - '--project=ppel-co-in'
+      - '--boot-disk-size=50GB'
+      - '--boot-disk-type=pd-ssd'
+      - '--boot-disk-device-name=gcpp-template'
+      - '--create-disk=mode=rw,boot=no,auto-delete=yes,image=gcr.io/ppel-co-in/Dockerfile:latest'
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        gcloud compute instance-groups managed create $INSTANCE_GROUP_NAME \
-          --base-instance-name=$INSTANCE_NAME \
-          --template=$INSTANCE_TEMPLATE \
-          --size=1 \
-          --project=$PROJECT_ID \
-          --zone=$INSTANCE_ZONE
-
-env:
-  - 'PROJECT_ID=ppel-co-in'
-  - 'INSTANCE_ZONE=us-central1-a'
-  - 'INSTANCE_NAME=gcpp'
-  - 'INSTANCE_TEMPLATE=gcpp-template'
-  - 'INSTANCE_GROUP_NAME=gcpp-group'
-
+      - 'compute'
+      - 'instance-groups'
+      - 'managed'
+      - 'create'
+      - 'gcpp-group'
+      - '--base-instance-name=gcpp'
+      - '--template=gcpp-template'
+      - '--size=1'
+      - '--project=ppel-co-in'
+      - '--zone=us-central1-a'
+  
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    args:
 #      - 'compute'
