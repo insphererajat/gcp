@@ -1,0 +1,41 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/ppel-co-in/Dockerfile:latest', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'instance-templates'
+      - 'create'
+      - '$(_CLOUD_INSTANCE_TEMPLATE)'
+      - '--image-family=rhel-8'
+      - '--image-project=rhel-cloud'
+      - '--tags=http-server,https-server'
+      - '--project=$(_CLOUD_PROJECT_ID)'
+      - '--boot-disk-size=50GB'
+      - '--boot-disk-type=pd-ssd'
+      - '--boot-disk-device-name=$(_CLOUD_INSTANCE_TEMPLATE)'
+      - '--create-disk=mode=rw,boot=no,auto-delete=yes,image=gcr.io/ppel-co-in/Dockerfile:latest'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'instance-groups'
+      - 'managed'
+      - 'create'
+      - '$(_CLOUD_INSTANCE_GROUP_NAME)'
+      - '--base-instance-name=$(_CLOUD_INSTANCE_NAME)'
+      - '--template=$(_CLOUD_INSTANCE_TEMPLATE)'
+      - '--size=1'
+      - '--project=$(_CLOUD_PROJECT_ID)'
+      - '--zone=$(_CLOUD_INSTANCE_ZONE)'
+
+substitutions:
+  _CLOUD_PROJECT_ID: 'ppel-co-in'
+  _CLOUD_INSTANCE_ZONE: 'us-central1'
+  _CLOUD_INSTANCE_NAME: 'gcp'
+  _CLOUD_INSTANCE_TEMPLATE: 'gcp-template'
+  _CLOUD_INSTANCE_GROUP_NAME: 'gcp-group'
