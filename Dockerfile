@@ -32,10 +32,6 @@ CMD ["httpd", "-D", "FOREGROUND"]
 # RUN yum -y install java-11-openjdk-devel
 
 # Download and extract Apache Tomcat
-# RUN curl -L https://downloads.apache.org/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50.tar.gz -o /tmp/tomcat.tar.gz && \
-    tar -xzvf /tmp/tomcat.tar.gz -C /opt && \
-    rm /tmp/tomcat.tar.gz && \
-    ln -s /opt/apache-tomcat-9.0.50 /opt/tomcat
 
 # Install MariaDB
 # RUN yum -y install mariadb-server
