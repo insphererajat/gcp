@@ -14,11 +14,11 @@ steps:
       - '--image-family=rhel-8'
       - '--image-project=rhel-cloud'
       - '--tags=http-server,https-server'
-      - '--project=ppel-co-in'
+      - '--project=${_CLOUD_PROJECT_ID}'
       - '--boot-disk-size=50GB'
       - '--boot-disk-type=pd-ssd'
       - '--boot-disk-device-name=gcpp-template'
-      - '--create-disk=mode=rw,boot=no,auto-delete=yes,image=gcr.io/ppel-co-in/Dockerfile:latest'
+      - '--create-disk=mode=rw,boot=yes,auto-delete=no,image=gcr.io/ppel-co-in/Dockerfile:latest'
 
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -30,9 +30,14 @@ steps:
       - '--base-instance-name=gcpp'
       - '--template=gcpp-template'
       - '--size=1'
-      - '--project=ppel-co-in'
-      - '--zone=us-central1-a'
-  
+      - '--project=${_CLOUD_PROJECT_ID}'
+      - '--zone=${_CLOUD_INSTANCE_ZONE}'
+      - '--region=us-central1'
+
+substitutions:
+  _CLOUD_PROJECT_ID: 'ppel-co-in'
+  _CLOUD_INSTANCE_ZONE: 'us-central1-a'
+
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    args:
 #      - 'compute'
