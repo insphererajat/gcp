@@ -1,19 +1,42 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/ppel-co-in/Dockerfile:latest', '.']
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['build', '-t', 'gcr.io/ppel-co-in/Dockerfile:latest', '.']
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
+
+  # Step 5: Deploy the Docker image to a managed instance group
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'instance-templates'
+      - 'create-with-container'
+      - 'your-instance-template'
+      - '--container-image=gcr.io/$PROJECT_ID/your-app:latest'
+      - '--machine-type=n1-standard-1'  # Adjust the machine type as needed
+      - '--tags=http-server,https-server'
 
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'compute'
-      - 'instances'
-      - 'create-with-container'
-      - 'instance-2'
-      - '--container-image=gcr.io/ppel-co-in/Dockerfile:latest'
-      - '--machine-type=n1-standard-1'
-      - '--zone=us-central1-a'
+      - 'target-pools'
+      - 'create'
+      - 'your-target-pool'
+      - '--region=your-region'  # Replace with your preferred region
+      - '--http-health-check=your-http-health-check'  # Replace with your HTTP health check
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'instance-groups'
+      - 'managed'
+      - 'create'
+      - 'your-instance-group'
+      - '--base-instance-name=your-instance-group'
+      - '--size=1'
+      - '--template=your-instance-template'
+      - '--target-pool=your-target-pool'
+      - '--region=your-region'  # Replace with your preferred region
 
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    args:
