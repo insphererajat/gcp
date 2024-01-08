@@ -11,7 +11,7 @@ RUN yum -y install httpd
 RUN sed -i "s/Listen 80/Listen $PORT/" /etc/httpd/conf/httpd.conf
 
 # Optionally, copy your custom configuration files or website content
-# COPY ./custom-config.conf /etc/httpd/conf.d/custom-config.conf
+COPY ./vhosts.conf /etc/httpd/conf.d/vhosts.conf
 # COPY ./html /var/www/html
 
 # Copy your index.html file into the Apache document root
