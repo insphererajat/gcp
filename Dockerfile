@@ -29,10 +29,10 @@ FROM registry.access.redhat.com/ubi8/ubi
 # Install necessary packages (replace with your specific requirements)
 RUN yum -y install java-11-openjdk-devel
 
-# Install Tomcat
-RUN curl -O https://downloads.apache.org/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50.tar.gz && \
-    tar -xzvf apache-tomcat-9.0.50.tar.gz -C /opt && \
-    rm apache-tomcat-9.0.50.tar.gz && \
+# Download and extract Apache Tomcat
+RUN curl -L https://downloads.apache.org/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50.tar.gz -o /tmp/tomcat.tar.gz && \
+    tar -xzvf /tmp/tomcat.tar.gz -C /opt && \
+    rm /tmp/tomcat.tar.gz && \
     ln -s /opt/apache-tomcat-9.0.50 /opt/tomcat
 
 # Install MariaDB
