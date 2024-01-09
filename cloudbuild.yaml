@@ -11,15 +11,14 @@ steps:
       - 'instances'
       - 'create'
       - 'your-instance-1'
-      - '--image-family=COS-5.15.133 stable'  # Choose the desired image family
-      #- '--image-project=cos-cloud'  # Choose the desired image project
+      - '--image-family=COS-5'  # Choose the desired image family
       - '--machine-type=e2-medium'  # Adjust the machine type as needed
       - '--zone=us-central1-a'  # Replace with your preferred GCE zone
       - '--tags=http-server,https-server'
       - '--boot-disk-size=10GB'  # Adjust the boot disk size as needed
       - '--boot-disk-type=pd-ssd'
       - '--boot-disk-device-name=your-instance-1'
-      - '--metadata=startup-script:#!/bin/bash\n\
-                          sudo docker run -d -p 80:80 gcr.io/ppel-co-in/Dockerfile:latest'  # Replace with your startup script content
+      #- '--metadata=startup-script:#!/bin/bash\n\
+                          #sudo docker run -d -p 80:80 gcr.io/ppel-co-in/Dockerfile:latest'  # Replace with your startup script content
 
   # Add more steps if needed
