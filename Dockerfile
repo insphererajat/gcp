@@ -45,7 +45,7 @@ RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.84/bin/apache-tomcat-9
 ARG TOMCAT_PORT=8080
 
 # Update Tomcat configuration to use the specified port
-RUN sed -i "s/Connector port=\"8080\"/Connector port=\"$TOMCAT_PORT\"/" /etc/tomcat/server.xml
+RUN sed -i "s/Connector port=\"8080\"/Connector port=\"$TOMCAT_PORT\"/" /opt/tomcat/conf/server.xml
 
 # Optionally, copy your custom configuration files or website content for Tomcat
 COPY ./tomcat_conf/context.xml /etc/tomcat/context.xml
