@@ -27,14 +27,19 @@
 # Use the official Red Hat Universal Base Image (UBI) as the base image
 FROM registry.access.redhat.com/ubi8/ubi
 
+# Install necessary tools
+RUN dnf -y update \
+    && dnf -y install curl unzip \
+    && dnf clean all
+
 # Install necessary packages (replace with your specific requirements)
 RUN yum -y install java-11-openjdk-devel
 
 # Download and extract Apache Tomcat
-RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.84/bin/apache-tomcat-9.0.84.zip && \
-    tar -xzvf apache-tomcat-9.0.84.tar.gz -C /opt && \
-    rm apache-tomcat-9.0.84.tar.gz && \
-    ln -s /opt/apache-tomcat-9.0.84 /opt/tomcat
+RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.84/bin/apache-tomcat-9.0.84.zip \
+    && unzip apache-tomcat-9.0.84.zip -d /opt \
+    && rm apache-tomcat-9.0.84.zip \
+    && ln -s /opt/apache-tomcat-9.0.84 /opt/tomcat
 
 # Install MariaDB
 RUN yum -y install mariadb-server
