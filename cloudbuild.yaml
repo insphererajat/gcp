@@ -1,17 +1,34 @@
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['config', 'set', 'project', 'ppel-co-in']
-  
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'compute'
+    - 'instance-templates'
+    - 'describe'
+    - 'gcpp-template'
+    - '--format=json'
+    - '--region=us-central1'
+  id: 'get-template-info'
+
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      VERSION=$(date +'%Y%m%d%H%M%S')
-      gcloud compute instance-templates create gcpp-template \
-         --machine-type e2-medium \
-         --image-family rhel-8 \
-         --image-project rhel-cloud \
-         --boot-disk-size 20GB \
-         --boot-disk-type pd-ssd \
-         --version $VERSION
+      if [[ $(cat $(dirname $0)/../$BUILD_ID.json | jq '.versions') == 'null' ]]; then
+        NEW_VERSION=1
+      else
+        EXISTING_VERSION=$(cat $(dirname $0)/../$BUILD_ID.json | jq '.versions[-1].name' | sed 's/v//')
+        NEW_VERSION=$((EXISTING_VERSION + 1))
+      fi
+
+      gcloud compute instance-templates add-version gcpp-template \
+        --source-instance-template=gcpp-template \
+        --template-version=v$NEW_VERSION \
+        --region=us-central1
+
+      gcloud compute instances create my-vm-instance \
+        --source-instance-template gcpp-template \
+        --zone us-central1-a
