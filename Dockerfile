@@ -41,6 +41,12 @@ RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.84/bin/apache-tomcat-9
     && rm apache-tomcat-9.0.84.zip \
     && ln -s /opt/apache-tomcat-9.0.84 /opt/tomcat
 
+# Enable the AppStream repository
+RUN dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
+    && dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm \
+    && dnf config-manager --set-enabled powertools \
+    && dnf clean all
+
 # Install MariaDB 10
 RUN yum -y install mariadb-server mariadb
 
