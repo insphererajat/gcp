@@ -41,18 +41,8 @@ RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.84/bin/apache-tomcat-9
     && rm apache-tomcat-9.0.84.zip \
     && ln -s /opt/apache-tomcat-9.0.84 /opt/tomcat
 
-# Enable the AppStream repository
-RUN dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
-    && dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm \
-    && dnf config-manager --set-enabled powertools \
-    && dnf clean all
-
-# Install MariaDB 10
-RUN yum -y install mariadb-server mariadb
-
 # Define an argument for the port with a default value of 8080
 ARG TOMCAT_PORT=8080
-ARG MARIADB_PORT=3306
 
 # Update Tomcat configuration to use the specified port
 RUN sed -i "s/Connector port=\"8080\"/Connector port=\"$TOMCAT_PORT\"/" /etc/tomcat/server.xml
@@ -61,15 +51,8 @@ RUN sed -i "s/Connector port=\"8080\"/Connector port=\"$TOMCAT_PORT\"/" /etc/tom
 COPY ./tomcat_conf/context.xml /etc/tomcat/context.xml
 #COPY ./webapps /usr/share/tomcat/webapps
 
-# Configure MariaDB
-RUN systemctl enable mariadb
-RUN systemctl start mariadb
-
-# Copy your MariaDB custom configuration files
-COPY ./mariadb_conf/my.cnf /etc/my.cnf.d/my.cnf
-
 # Expose the ports defined during build time
-EXPOSE $TOMCAT_PORT $MARIADB_PORT
+EXPOSE $TOMCAT_PORT
 
 # The main command to start services when the container starts
 CMD ["sh", "-c", "/opt/tomcat/bin/catalina.sh run"]
