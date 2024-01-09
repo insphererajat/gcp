@@ -3,14 +3,22 @@ steps:
   args: ['config', 'set', 'project', 'ppel-co-in']
   
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['compute', 'instance-templates', 'create', 'gcpp-template',
-         '--machine-type', 'e2-medium',
-         '--image-family', 'rhel-8',
-         '--image-project', 'rhel-cloud',
-         '--boot-disk-size', '20GB',
-         '--boot-disk-type', 'pd-ssd']
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      VERSION=$(date +'%Y%m%d%H%M%S')
+      TEMPLATE_NAME=gcpp-template-$VERSION
+      gcloud compute instance-templates create $TEMPLATE_NAME \
+         --machine-type e2-medium \
+         --image-family rhel-8 \
+         --image-project rhel-cloud \
+         --boot-disk-size 20GB \
+         --boot-disk-type pd-ssd \
+         --tags http-server,https-server  # Allow HTTP/HTTPS traffic
+         --region us-central1  # Specify the region
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['compute', 'instances', 'create', 'my-vm-instance',
-         '--source-instance-template', 'gcpp-template',
+         '--source-instance-template', '$TEMPLATE_NAME',
          '--zone', 'us-central1-a']
