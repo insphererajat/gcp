@@ -48,7 +48,7 @@ ARG TOMCAT_PORT=8080
 RUN sed -i "s/Connector port=\"8080\"/Connector port=\"$TOMCAT_PORT\"/" /opt/tomcat/conf/server.xml
 
 # Optionally, copy your custom configuration files or website content for Tomcat
-COPY ./tomcat_conf/context.xml /etc/tomcat/context.xml
+#COPY ./tomcat_conf/context.xml /etc/tomcat/context.xml
 #COPY ./webapps /usr/share/tomcat/webapps
 
 # Expose the ports defined during build time
