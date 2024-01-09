@@ -23,6 +23,3 @@ steps:
     # Add additional flags if needed, e.g., tags, labels, etc.
     - '--tags=http-server,https-server'
     # - '--labels=env=production'
-
-# Additional steps, if needed
-# ...
