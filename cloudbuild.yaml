@@ -17,18 +17,25 @@ steps:
   args:
     - '-c'
     - |
-      if [[ $(cat $(dirname $0)/../$BUILD_ID.json | jq '.versions') == 'null' ]]; then
-        NEW_VERSION=1
-      else
-        EXISTING_VERSION=$(cat $(dirname $0)/../$BUILD_ID.json | jq '.versions[-1].name' | sed 's/v//')
-        NEW_VERSION=$((EXISTING_VERSION + 1))
-      fi
+      EXISTING_VERSION=$(cat $(dirname $0)/../$BUILD_ID.json | jq '.versions[-1].name' | sed 's/v//')
+      NEW_VERSION=$((EXISTING_VERSION + 1))
+      echo $NEW_VERSION > $(dirname $0)/../new_version.txt
 
-      gcloud compute instance-templates add-version gcpp-template \
-        --source-instance-template=gcpp-template \
-        --template-version=v$NEW_VERSION \
-        --region=us-central1
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'compute'
+    - 'instance-templates'
+    - 'add-version'
+    - 'gcpp-template'
+    - '--source-instance-template=gcpp-template'
+    - '--template-version=$(cat $(dirname $0)/../new_version.txt)'
+    - '--region=us-central1'
 
-      gcloud compute instances create my-vm-instance \
-        --source-instance-template gcpp-template \
-        --zone us-central1-a
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'compute'
+    - 'instances'
+    - 'create'
+    - 'my-vm-instance'
+    - '--source-instance-template=gcpp-template'
+    - '--zone=us-central1-a'
