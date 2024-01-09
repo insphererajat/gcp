@@ -1,0 +1,25 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/ppel-co-in/Dockerfile:latest', '.']
+
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'instances'
+      - 'create'
+      - 'your-instance-1'
+      - '--image-family=cos-stable'  # Choose the desired image family
+      - '--image-project=cos-cloud'  # Choose the desired image project
+      - '--machine-type=n1-standard-1'  # Adjust the machine type as needed
+      - '--zone=us-central1-a'  # Replace with your preferred GCE zone
+      - '--tags=http-server,https-server'
+      - '--boot-disk-size=10GB'  # Adjust the boot disk size as needed
+      - '--boot-disk-type=pd-ssd'
+      - '--boot-disk-device-name=your-instance'
+      - '--metadata=startup-script:#!/bin/bash\n\
+                          sudo docker run -d -p 80:80 gcr.io/$PROJECT_ID/your-app:latest'  # Replace with your startup script content
+
+  # Add more steps if needed
