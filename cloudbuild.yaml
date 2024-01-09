@@ -20,6 +20,7 @@ steps:
       EXISTING_VERSION=$(cat $(dirname $0)/../$BUILD_ID.json | jq '.versions[-1].name' | sed 's/v//')
       NEW_VERSION=$((EXISTING_VERSION + 1))
       echo $NEW_VERSION > $(dirname $0)/../new_version.txt
+      gsutil cp $(dirname $0)/../new_version.txt gs://your-cloud-storage-bucket/
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
@@ -28,7 +29,7 @@ steps:
     - 'add-version'
     - 'gcpp-template'
     - '--source-instance-template=gcpp-template'
-    - '--template-version=$(cat $(dirname $0)/../new_version.txt)'
+    - '--template-version=$(gsutil cat gs://your-cloud-storage-bucket/new_version.txt)'
     - '--region=us-central1'
 
 - name: 'gcr.io/cloud-builders/gcloud'
