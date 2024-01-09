@@ -9,3 +9,8 @@ steps:
          '--image-project', 'rhel-cloud',
          '--boot-disk-size', '20GB',
          '--boot-disk-type', 'pd-ssd']
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'instances', 'create', 'my-vm-instance',
+         '--source-instance-template', 'gcpp-template',
+         '--zone', 'us-central1-a']
