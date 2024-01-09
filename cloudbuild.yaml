@@ -1,16 +1,28 @@
 steps:
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['config', 'set', 'project', 'ppel-co-in']
-  
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['compute', 'instance-templates', 'create', 'gcpp2-template',
-         '--machine-type', 'e2-medium',
-         '--image-family', 'rhel-8',
-         '--image-project', 'rhel-cloud',
-         '--boot-disk-size', '20GB',
-         '--boot-disk-type', 'pd-ssd']
+# Step 1: Build the Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/ppel-co-in/Dockerfile:latest', '.']
 
+# Step 2: Push the Docker image to Google Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/ppel-co-in/Dockerfile:latest']
+
+# Step 3: Deploy the Docker image to Google Compute Engine
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['compute', 'instances', 'create', 'my-vm-instance',
-         '--source-instance-template', 'gcpp2-template',
-         '--zone', 'us-central1-a']
+  args:
+    - 'compute'
+    - 'instances'
+    - 'create'
+    - 'my-vm-instance'
+    - '--image'
+    - 'gcr.io/ppel-co-in/Dockerfile:latest'
+    - '--machine-type'
+    - 'e2-medium'
+    - '--zone'
+    - 'us-central1-a'
+    # Add additional flags if needed, e.g., tags, labels, etc.
+    - '--tags=http-server,https-server'
+    # - '--labels=env=production'
+
+# Additional steps, if needed
+# ...
