@@ -41,8 +41,10 @@ RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.84/bin/apache-tomcat-9
     && rm apache-tomcat-9.0.84.zip \
     && ln -s /opt/apache-tomcat-9.0.84 /opt/tomcat
 
-# Install MariaDB
-RUN yum -y install mariadb-server
+# Install MariaDB 10
+RUN dnf -y install https://downloads.mariadb.com/MariaDB/mariadb_repo_setup \
+    && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-MariaDB \
+    && dnf -y install MariaDB-server MariaDB-client \
 
 # Define an argument for the port with a default value of 8080
 ARG TOMCAT_PORT=8080
