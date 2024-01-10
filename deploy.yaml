@@ -4,7 +4,7 @@ steps:
   args: ['config', 'set', 'project', 'ppel-co-in']
   env:
     - 'PROJECT_ID=$PROJECT_ID'
-    - 'CLOUDSDK_COMPUTE_ZONE=$ZONE'
+    - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-a'
 
 # Execute pre-build commands on VM instance
 - name: 'gcr.io/cloud-builders/gcloud'
