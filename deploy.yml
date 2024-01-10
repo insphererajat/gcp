@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: rhel8
 
     steps:
     - name: Checkout code
@@ -22,5 +22,8 @@ jobs:
 
     - name: Deploy to GCE
       run: |
-        scp -i ~/.ssh/id_rsa -r . user@your-gce-vm-ip:/path/on/gce/vm
+        for vm_ip in "${{ secrets.GCE_VM_IPS_SPLITTED }}"; do
+          scp -i ~/.ssh/id_rsa -r . user@$35.200.140.235:/path/on/gce/vm
+          ssh -i ~/.ssh/id_rsa user@$35.200.140.235 '/path/on/gce/vm/deploy.sh'
+        done
 
