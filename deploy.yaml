@@ -1,20 +1,36 @@
+#steps:
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['build', '-t', 'gcr.io/ppel-co-in/gcp:latest', '.']
+
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['push', 'gcr.io/ppel-co-in/gcp:latest']
+
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    args:
+#      - 'compute'
+#      - 'instances'
+#      - 'create'
+#      - 'test1'
+#      - '--image-family=rhel8'  # Choose the desired image family
+#      - '--machine-type=e2-medium'  # Adjust the machine type as needed
+#      - '--zone=us-central1-a'  # Replace with your preferred GCE zone
+#      - '--tags=http-server,https-server'
+#      - '--boot-disk-size=10GB'  # Adjust the boot disk size as needed
+#      - '--boot-disk-type=pd-ssd'
+#      - '--boot-disk-device-name=test1'
+
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/ppel-co-in/gcp:latest', '.']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'instances', 'create', 'test1', '--image', 'ubuntu-2004-focal-v20220105', '--zone', 'us-central1-a']
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/ppel-co-in/gcp:latest']
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/insphererajat/gcp.git']
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'compute'
-      - 'instances'
-      - 'create'
-      - 'test1'
-      - '--image-family=rhel8'  # Choose the desired image family
-      - '--machine-type=e2-medium'  # Adjust the machine type as needed
-      - '--zone=us-central1-a'  # Replace with your preferred GCE zone
-      - '--tags=http-server,https-server'
-      - '--boot-disk-size=10GB'  # Adjust the boot disk size as needed
-      - '--boot-disk-type=pd-ssd'
-      - '--boot-disk-device-name=test1'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/ppel-co-in/gcp:latest', '.']
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'instances', 'update-container', 'test1', '--container-image', 'gcr.io/ppel-co-in/gcp:latest']
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'ssh', 'test1', '--command', 'sudo systemctl restart httpd']
