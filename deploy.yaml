@@ -1,0 +1,27 @@
+steps:
+# Set up Google Cloud SDK
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['config', 'set', 'project', 'ppel-co-in']
+  env:
+    - 'PROJECT_ID=$ppel-co-in'
+    - 'CLOUDSDK_COMPUTE_ZONE=$asia-south1-a'
+
+# Execute pre-build commands on VM instance
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'ssh', 'text@35.200.140.235', '--command', 'cd /var/ && ./pre_build.sh']
+  dir: '/workspace'
+
+# Build your code
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/ppel-co-in/gcp', '.']
+  dir: '/workspace'
+
+# Copy code to VM instance
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'scp', '--recurse', '.', 'text@35.200.140.235:/var/www/']
+  dir: '/workspace'
+
+# Execute deployment script on VM instance
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'ssh', 'text@35.200.140.235', '--command', 'cd /var/ && ./deploy.sh']
+  dir: '/workspace'
