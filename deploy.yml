@@ -23,7 +23,7 @@ jobs:
     - name: Deploy to GCE
       run: |
         for vm_ip in "${{ secrets.GCE_VM_IPS_SPLITTED }}"; do
-          scp -i ~/.ssh/id_rsa -r . user@$35.200.140.235:/path/on/gce/vm
-          ssh -i ~/.ssh/id_rsa user@$35.200.140.235 '/path/on/gce/vm/deploy.sh'
+          scp -i ~/.ssh/id_rsa -r . user@$35.200.140.235:/var/index.html
+     #     ssh -i ~/.ssh/id_rsa user@$35.200.140.235 '/path/on/gce/vm/deploy.sh'
         done
 
