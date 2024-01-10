@@ -5,7 +5,10 @@ FROM registry.access.redhat.com/ubi8/ubi
 ARG PORT=8080
 
 # Install necessary packages (replace with your specific requirements)
+RUN yum -y update
 RUN yum -y install httpd
+RUN yum -y install git
+RUN yum -y install wget
 
 # Update the Apache configuration to use the specified port
 RUN sed -i "s/Listen 80/Listen $PORT/" /etc/httpd/conf/httpd.conf
