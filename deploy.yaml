@@ -7,9 +7,9 @@ steps:
     - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-a'
 
 # Execute pre-build commands on VM instance
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['compute', 'ssh', 'text@35.200.140.235', '--zone=asia-south1-a', '--command', 'cd /var/ && ./pre_build.sh']
-  dir: '/workspace'
+#- name: 'gcr.io/cloud-builders/gcloud'
+#  args: ['compute', 'ssh', 'text@35.200.140.235', '--zone=asia-south1-a', '--command', 'cd /var/ && ./pre_build.sh']
+#  dir: '/workspace'
 
 # Build your code
 - name: 'gcr.io/cloud-builders/docker'
