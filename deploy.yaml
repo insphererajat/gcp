@@ -13,7 +13,7 @@ steps:
 
 # Build your code
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/ppel-co-in/Dockerfile:latest', '.']
+  args: ['build', '-t', 'gcr.io/ppel-co-in/gcp:latest', '.']
   dir: '/workspace'
 
 # Copy code to VM instance
