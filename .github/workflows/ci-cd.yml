@@ -27,7 +27,7 @@ jobs:
           GCE_INSTANCE_NAME: "test"
           GCE_ZONE: "asia-south1-c"
         run: |
-          echo "$SA_KEY" > gcp-key.json
+          echo "$GCP_SA_KEY" > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project "$PROJECT_ID"
 
