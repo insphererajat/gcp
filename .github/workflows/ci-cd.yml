@@ -23,19 +23,13 @@ jobs:
       - name: Deploy to GCE
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          SA_KEY: ${{ secrets.GCP_SA_KEY }}
           GCE_INSTANCE_NAME: "test"
           GCE_ZONE: "asia-south1-c"
         run: |
-          # echo "$GCP_SA_KEY" > gcp-key.json
-          # gcloud auth activate-service-account --key-file=gcp-key.json
-          # gcloud config set project "$PROJECT_ID"
+          gcloud config set project "$PROJECT_ID"
 
           # Copy your application files to GCE VM using SCP
-          scp -i gcp-key.json -o StrictHostKeyChecking=no -r ./* \
-              insphere_rajat@${GCE_INSTANCE_NAME}:~/var/www/html/
+          gcloud compute scp --recurse ./* ${GCE_INSTANCE_NAME}:~/var/www/html/ --zone=${GCE_ZONE}
 
           # SSH into GCE VM and restart Apache
-          ssh -i gcp-key.json -o StrictHostKeyChecking=no \
-              insphere_rajat@${GCE_INSTANCE_NAME} \
-              "sudo systemctl restart apache2"
+          gcloud compute ssh ${GCE_INSTANCE_NAME} --zone=${GCE_ZONE} --command="sudo systemctl restart httpd"
