@@ -27,9 +27,9 @@ jobs:
           GCE_INSTANCE_NAME: "test"
           GCE_ZONE: "asia-south1-c"
         run: |
-          echo "$GCP_SA_KEY" > gcp-key.json
-          gcloud auth activate-service-account --key-file=gcp-key.json
-          gcloud config set project "$PROJECT_ID"
+          # echo "$GCP_SA_KEY" > gcp-key.json
+          # gcloud auth activate-service-account --key-file=gcp-key.json
+          # gcloud config set project "$PROJECT_ID"
 
           # Copy your application files to GCE VM using SCP
           scp -i gcp-key.json -o StrictHostKeyChecking=no -r ./* \
