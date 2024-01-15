@@ -20,16 +20,25 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
 
-      - name: Deploy to GCE
-        env:
-          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GCE_INSTANCE_NAME: "test"
-          GCE_ZONE: "asia-south1-c"
+      - name: Build and Upload to Google Cloud Storage
         run: |
-          gcloud config set project "$PROJECT_ID"
+          # Set your bucket name and desired destination path
+          BUCKET_NAME="artifacts.ppel-co-in.appspot.com"
+          DESTINATION_PATH="artifacts.ppel-co-in.appspot.com/containers/"
 
-          # Copy your application files to GCE VM using SCP
-          gcloud compute scp --recurse ./* ${GCE_INSTANCE_NAME}:~/var/www/html/ --zone=${GCE_ZONE}
+          # Use gsutil to recursively copy files to Google Cloud Storage
+          gsutil -m cp -r ./* gs://${BUCKET_NAME}/${DESTINATION_PATH}
+     
+#      - name: Deploy to GCE
+#        env:
+#          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+#          GCE_INSTANCE_NAME: "test"
+#          GCE_ZONE: "asia-south1-c"
+#        run: |
+#          gcloud config set project "$PROJECT_ID"
 
-          # SSH into GCE VM and restart Apache
-          gcloud compute ssh ${GCE_INSTANCE_NAME} --zone=${GCE_ZONE} --command="sudo systemctl restart apache2"
+#          # Copy your application files to GCE VM using SCP
+#          gcloud compute scp --recurse ./* ${GCE_INSTANCE_NAME}:~/var/www/html/ --zone=${GCE_ZONE}
+
+#          # SSH into GCE VM and restart Apache
+#          gcloud compute ssh ${GCE_INSTANCE_NAME} --zone=${GCE_ZONE} --command="sudo systemctl restart apache2"
